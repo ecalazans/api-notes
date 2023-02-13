@@ -13,8 +13,8 @@ app.use(express.json()); // configuração do uso de JSON no envio e leitura de 
 
 app.use(routes);
 
-
 app.use(( error, request, response, next ) => {
+  //erro lado cliente
   if(error instanceof AppError) {
     return response.status(error.statusCode).json({
       status: "error",
@@ -24,6 +24,7 @@ app.use(( error, request, response, next ) => {
 
   console.error(error);
 
+  //erro lado servidor
   return response.status(500).json({
     status: "error",
     message: "Internal server error",
