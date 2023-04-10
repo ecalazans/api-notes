@@ -8,12 +8,12 @@ class NotesController {
     const user_id = request.user.id;
 
     // Utilizando knex: Passando o obj para cadastro no BD
-    const note_id = await knex("notes").insert({
+    const [note_id] = await knex("notes").insert({
       title,
       description,
       user_id,
     });
-    console.log(note_id);
+    // console.log(note_id);
 
     const linksInsert = links.map(links => {
       return {
@@ -24,7 +24,7 @@ class NotesController {
 
     // Por estarmos passando um vetor, o knex vai inserir de uma vez.
     await knex("links").insert(linksInsert);
-    console.log(linksInsert);
+    //console.log(linksInsert);
 
     const tagsInsert = tags.map(name => {
       return {
@@ -36,7 +36,7 @@ class NotesController {
 
     // Por estarmos passando um vetor, o knex vai inserir de uma vez.
     await knex("tags").insert(tagsInsert);
-    console.log(tagsInsert);
+    // console.log(tagsInsert);
 
     response.json();
   }
@@ -85,6 +85,7 @@ class NotesController {
       .whereLike("notes.title", `%${title}%`)
       .whereIn("name", filterTags)
       .innerJoin("notes", "notes.id", "tags.note_id")
+      .groupBy("notes.id")
       .orderBy("notes.title");
       
     } else {
