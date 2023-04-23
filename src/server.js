@@ -1,7 +1,8 @@
-require("express-async-errors")
+require("dotenv/config");
+require("express-async-errors");
 
-const migrationsRun = require("./database/sqlite/migrations") // por padão carrega o index.js
-const AppError = require("./utils/AppError")
+const migrationsRun = require("./database/sqlite/migrations"); // por padão carrega o index.js
+const AppError = require("./utils/AppError");
 const uploadConfig = require("./configs/upload");
 
 const cors = require("cors"); // biblioteca importante para conectar o back-end com o front-end
@@ -37,6 +38,6 @@ app.use(( error, request, response, next ) => {
 
 })
 
-const PORT = 3333;
+const PORT = process.env.PORT || 3333;
 app.listen(PORT, () => console.log(`Server is running on Port ${PORT}`));
 
